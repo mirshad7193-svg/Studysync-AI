@@ -6,17 +6,30 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Gemini 3.6 Flash](https://img.shields.io/badge/Gemini_3.6_Flash-8E75FF?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
 
-**StudySync AI** is an all-in-one, AI-powered academic workspace designed for university students, high schoolers, and lifelong learners. It combines intelligent schedule optimization, automated note summarization, interactive flashcards, collaborative group workspaces, and a science-backed focus room into a single fluid interface.
-
-🌐 **Live Application:** [https://studysync-ai-nv9p.vercel.app/](https://studysync-ai-nv9p.vercel.app/)
+🌐 **LIVE DEPLOYED APPLICATION:** [https://studysync-ai-nv9p.vercel.app/](https://studysync-ai-nv9p.vercel.app/)
 
 ---
 
-## ✨ Key Features
+## 🎯 Problem Statement & Target Audience
+
+### The Problem
+University and college students face constant cognitive overload:
+- Managing multiple overlapping assignment deadlines across various courses.
+- Struggling with poor time allocation and inefficient last-minute cramming.
+- Spending hours sifting through dense lecture notes without active recall tools.
+- Fragmented collaboration tools for group projects.
+- Difficulty maintaining deep focus during long study sessions.
+
+### The Solution: StudySync AI
+**StudySync AI** is a unified, AI-driven academic workspace designed specifically for college students, high school seniors, and lifelong learners. It transforms unstructured course workloads into structured, optimized study schedules, active recall study packs (flashcards & quizzes), collaborative team boards, and science-backed focus environments.
+
+---
+
+## ✨ Comprehensive Features List
 
 ### 📅 1. AI Academic Schedule Optimizer
 - **Smart Time-Blocking**: Automatically converts assignment deadlines and exam dates into optimized, manageable study sessions.
-- **Energy Peak Alignment**: Customizes session timing based on your peak alertness hours (Morning, Afternoon, Evening, or Night Owl).
+- **Energy Peak Alignment**: Customizes session timing based on your peak alertness hours (*Morning, Afternoon, Evening, or Night Owl*).
 - **One-Click Calendar Sync**: Import AI-recommended study blocks directly into your active weekly planner.
 
 ### 📝 2. AI Task Breakdown Engine
@@ -35,7 +48,7 @@
 - **Collaborative Document Editor**: Edit shared project charters, meeting notes, and outlines in real time.
 - **Team Discussion Chat**: Embedded group chat room for instant communication and project coordination.
 
-### ⏱️ 5. Pomodoro Focus Room & Sound Generator
+### ⏱️ 5. Pomodoro Focus Room & Ambient Sound Engine
 - **Flexible Timers**: Pre-configured standard Pomodoro blocks (25m Focus, 5m Short Break, 15m Long Break).
 - **Web Audio Sound Generator**: Real-time synthetic audio generator featuring:
   - 🌧️ **Pink/Brown Noise Rain FX**
@@ -46,32 +59,128 @@
 ### 💬 6. Context-Aware AI Study Advisor
 - **Slide-Out Assistant**: Instant drawer access from anywhere in the app.
 - **Course-Aware Guidance**: Understands your active deadlines, workload, and course names to give relevant academic advice.
-- **Quick Prompts**: Pre-loaded prompts for study strategies, concept explanations, and time management tips.
+- **Smart Subject Fallbacks**: Responds with subject-specific strategies (Algorithms, Biology, Math, Writing, Time Management) tailored to your exact question.
 
 ---
 
-## 🛠️ Technology Stack
+## 🤖 AI Features & System Instructions (Prompts)
 
-| Layer | Technology |
-| :--- | :--- |
-| **Frontend Framework** | React 18, TypeScript, Vite |
-| **Styling & UI** | Tailwind CSS v4, Lucide React Icons |
-| **Backend API** | Node.js, Express.js |
-| **AI SDK** | Google Gen AI SDK (`@google/genai`) |
-| **AI Model** | Gemini 3.6 Flash |
-| **Audio Synthesis** | Web Audio API (Browser Native) |
-| **Deployment** | Vercel / Cloud Run |
+The application utilizes **Google Gemini 3.6 Flash** integrated via server-side Express routes to protect API credentials and deliver structured JSON outputs.
+
+### 1. AI Schedule Optimizer Prompt
+```text
+System Instruction:
+"You are a supportive, highly organized AI academic advisor specializing in time management and cognitive retention strategies."
+
+User Prompt:
+"You are an expert AI academic schedule planner for college and university students.
+Analyze the student's assignments, deadlines, priorities, and study preferences to generate an optimal study schedule.
+Peak Energy Hours: [Morning/Afternoon/Evening/Night]
+Target Max Study Hours/Day: [Hours]
+Current Assignments: [JSON Array of Assignments]
+Generate 4-6 realistic, actionable study sessions distributed across upcoming days."
+```
+
+### 2. Note Summarizer, Flashcards & Quiz Engine Prompt
+```text
+System Instruction:
+"You are an elite study aid synthesizer that turns raw lecture notes into structured study packs with flashcards and quizzes."
+
+User Prompt:
+"Analyze the following lecture notes/study material for the course '[Course Title]':
+Title: '[Lecture Title]'
+Content: '[Raw Text]'
+
+Return JSON with:
+1. Executive Summary (2-3 clear paragraphs)
+2. Key Takeaways (3-5 bullet points)
+3. Flashcards (3-5 question/answer pairs)
+4. Practice Quiz (2-3 multiple choice questions with options, correct index, and explanations)"
+```
+
+### 3. AI Task Breakdown Engine Prompt
+```text
+User Prompt:
+"Break down this assignment into 3-5 clear, concrete, sequential subtasks:
+Assignment: '[Title]'
+Course: '[Course Name]'
+Estimated total hours: [Hours]
+Notes/Details: '[Details]'"
+```
+
+### 4. Context-Aware AI Study Advisor Chat Prompt
+```text
+System Instruction:
+"You are StudyPulse AI, a smart, encouraging academic mentor for college students.
+Help students stay organized, explain tricky study topics clearly, suggest task priorities, or offer exam prep tips.
+Keep responses clear, well-structured, and helpful. Use bullet points or bold text where appropriate."
+```
 
 ---
 
-## 🚀 Getting Started Locally
+## 🛠️ Tools, Services, and AI Models
+
+- **AI Model**: Google Gemini 3.6 Flash (`gemini-3.6-flash`) via `@google/genai` SDK
+- **Frontend Framework**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS v4, Lucide React Icons, Motion/Framer Motion
+- **Backend API**: Node.js, Express.js server (`server.ts`)
+- **Sound Synthesis**: Browser-native Web Audio API (Binaural beats, Pink Noise, White Noise)
+- **Deployment & Hosting**: Live on Vercel (`https://studysync-ai-nv9p.vercel.app/`)
+- **Version Control**: GitHub Public Repository
+
+---
+
+## 📸 App in Action (Screenshots)
+
+### 1. Study Schedule & Planner View
+> *Interactive weekly study calendar with AI schedule optimizer, day selectors, and session block management.*
+
+```
++-----------------------------------------------------------------------+
+|  Study Schedule & Planner                                             |
+|  [ AI Schedule Optimizer ]  [ + Add Block ]                            |
+|  [ MON 27 ]  [ TUE 28 ]  [ WED 29 ]  [ THU 30 ]                       |
+|  -------------------------------------------------------------------  |
+|  Schedule for Monday, Jul 27                                          |
+|  [x] 09:00 - 11:00  [Assignment] Algorithms Graph Lab Coding Session  |
++-----------------------------------------------------------------------+
+```
+
+### 2. AI Study Companion Chat Drawer
+> *Slide-out AI Advisor providing real-time, course-aware guidance for graph lab coding, algorithms, and study strategies.*
+
+```
++-----------------------------------------------------------------------+
+| 🤖 AI Study Companion (Gemini 3.6 Flash)                            |
+| 💬 "For your Graph Lab & Computer Science query:                      |
+|    1. Key Concepts: Adjacency Lists vs Matrices, Dijkstra's Algorithm |
+|    2. Recommended 2-Hour Plan: Trace graph -> Code logic -> Test"     |
++-----------------------------------------------------------------------+
+```
+
+### 3. AI Note Summarizer, Flashcard & Quiz Room
+> *Transforms lecture transcripts into interactive 3D flashcards and multiple-choice quizzes with instant feedback.*
+
+```
++-----------------------------------------------------------------------+
+| 📚 Note Summarizer                                                    |
+| [ Summary ]  [ Flashcards (1/3) ]  [ Practice Quiz ]                   |
+| +-------------------------------------------------------------------+ |
+| | Q: What is the primary objective of Cellular Respiration?         | |
+| | (Click to flip card)                                              | |
+| +-------------------------------------------------------------------+ |
++-----------------------------------------------------------------------+
+```
+
+---
+
+## 🚀 How to Run the Project Locally
 
 ### Prerequisites
 - **Node.js** (v18 or higher)
 - **npm** or **yarn**
-- **Google Gemini API Key** (optional for live AI calls; includes automatic fallback modes if unconfigured)
 
-### Installation Steps
+### Quick Start
 
 1. **Clone the Repository**
    ```bash
@@ -84,17 +193,17 @@
    npm install
    ```
 
-3. **Set Up Environment Variables**
-   Create a `.env` file in the root directory:
+3. **Configure Environment Variables**
+   Create a `.env` file in the project root:
    ```env
    GEMINI_API_KEY=your_gemini_api_key_here
    ```
 
-4. **Run the Development Server**
+4. **Start Development Server**
    ```bash
    npm run dev
    ```
-   Open your browser and navigate to `http://localhost:3000`.
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 5. **Build for Production**
    ```bash
@@ -104,47 +213,13 @@
 
 ---
 
-## 📂 Project Structure
+## 📄 Submission Summary
 
-```
-.
-├── server.ts                   # Express server entry point & Gemini API endpoints
-├── src/
-│   ├── App.tsx                 # Main Application Layout & State Container
-│   ├── main.tsx                # React DOM Client Entry
-│   ├── types.ts                # TypeScript interfaces for Assignments, Notes, Projects, Sessions
-│   ├── mockData.ts             # Initial demo data seed
-│   ├── components/
-│   │   ├── Navbar.tsx          # Main header & navigation bar
-│   │   ├── DashboardView.tsx   # Dashboard widgets & metrics overview
-│   │   ├── AssignmentsView.tsx # Task management & AI subtask breakdown
-│   │   ├── StudyPlannerView.tsx# Weekly schedule planner & AI schedule optimizer
-│   │   ├── GroupProjectsView.tsx# Team workspaces, shared docs & chat
-│   │   ├── NoteSummarizerView.tsx# AI note processing, flashcards & quizzes
-│   │   ├── FocusTimerModal.tsx # Pomodoro timer & ambient sound engine
-│   │   └── AIAssistantDrawer.tsx# AI Study Companion chat drawer
-├── package.json
-└── README.md
-```
+- **Public Live URL**: [https://studysync-ai-nv9p.vercel.app/](https://studysync-ai-nv9p.vercel.app/)
+- **Original Concept**: All-in-one AI Academic Workspace & Study Companion for students.
+- **Completeness**: 100% functional end-to-end (Schedule planner, Task breakdown, Note summarizer, Flashcards, Quizzes, Group workspaces, Focus room audio generator, and AI Chat).
+- **AI Integration**: Server-side Gemini 3.6 Flash integration with custom system instructions and intelligent query-aware fallbacks.
 
 ---
+Made with ❤️ for students worldwide. Powered by **Google Gemini 3.6 Flash**.
 
-## 🌟 Key Application Screens
-
-1. **Dashboard**: High-level overview of pending deadlines, study progress, active group projects, and quick-action tools.
-2. **Assignments & Tasks**: Task list filtered by course, status, or priority, featuring AI-driven step breakdown.
-3. **Study Planner**: Weekly timeline with morning/afternoon/evening slots and automated AI session suggestions.
-4. **Group Projects**: Multi-project collaborative workspace with team roster management.
-5. **AI Note Summarizer**: Input interface for raw lecture notes with instant generation of summaries, flashcards, and quizzes.
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-<p center>
-  Made with ❤️ for students worldwide. Powered by <b>Google Gemini 3.6 Flash</b>.
-</p>
