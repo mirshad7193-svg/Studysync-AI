@@ -119,7 +119,16 @@ export const AssignmentsView: React.FC<AssignmentsViewProps> = ({
         });
       }
     } catch (err) {
-      console.error('Failed to break down subtasks:', err);
+      console.error('Failed to break down subtasks, using fallback:', err);
+      const fallbackSubtasks = [
+        { id: `sub-fb-1-${Date.now()}`, title: `Review guidelines & outline approach for ${assignment.title}`, completed: false },
+        { id: `sub-fb-2-${Date.now()}`, title: `Draft core sections / write code implementation`, completed: false },
+        { id: `sub-fb-3-${Date.now()}`, title: `Verify edge cases and complete final review for ${assignment.course}`, completed: false },
+      ];
+      onUpdateAssignment({
+        ...assignment,
+        subtasks: [...(assignment.subtasks || []), ...fallbackSubtasks],
+      });
     } finally {
       setBreakingDownId(null);
     }
