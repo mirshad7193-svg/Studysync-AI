@@ -355,31 +355,89 @@ Keep responses clear, well-structured, and helpful. Use bullet points or bold te
     }
 
     // Fallback AI Advisor Chat Response
-    const query = message.toLowerCase();
-    let reply = `I'm here to support your study goals! `;
+    const q = message.toLowerCase();
+    let reply = '';
 
-    if (query.includes('plan') || query.includes('schedule') || query.includes('time')) {
-      reply += `Here is a quick study planning recommendation:
-1. **Prioritize by Deadline**: Tackle tasks due within 48 hours first.
-2. **Use 50/10 Pomodoro Blocks**: Study intensely for 50 minutes, then take a 10-minute mental break.
-3. **Schedule Peak Hours**: Schedule deep analytical subjects during your highest energy time window.`;
-    } else if (query.includes('graph') || query.includes('algo') || query.includes('cs')) {
-      reply += `For computer science and algorithms:
-- **Visualize the Data Structure**: Draw node connections and pointer transitions manually.
-- **Trace Edge Cases**: Test empty inputs, single nodes, and disconnected graphs.
-- **Master Complexity**: Practice writing both time (O) and space complexity analysis for your functions.`;
-    } else if (query.includes('bio') || query.includes('exam') || query.includes('memo')) {
-      reply += `To master biology and concept-heavy subjects:
-- **Active Recall**: Use our built-in Flashcards tool under Note Summarizer to test yourself.
-- **Feynman Technique**: Explain concepts out loud in simple terms without looking at notes.
-- **Spaced Repetition**: Revisit difficult terms at 1-day, 3-day, and 7-day intervals.`;
+    if (
+      q.includes('graph') ||
+      q.includes('dijkstra') ||
+      q.includes('algo') ||
+      q.includes('cs') ||
+      q.includes('code') ||
+      q.includes('programming') ||
+      q.includes('lab')
+    ) {
+      reply = `For your **Graph Lab & Computer Science** query:
+
+🎯 **1. Key Algorithmic Concepts to Focus On:**
+- **Graph Representations:** Master Adjacency Lists (O(V + E) space) vs Adjacency Matrices (O(V²) space).
+- **Shortest Path & Traversal:** Review Dijkstra's Algorithm (priority queue implementation, O((V + E) log V)) and BFS for unweighted graphs.
+- **Edge Cases:** Test single-node graphs, disconnected components, negative edge weights (Bellman-Ford), and cyclic structures.
+
+⏱️ **2. Recommended 2-Hour Study Plan:**
+1. **Block 1 (30 mins):** Trace Dijkstra/BFS on paper with a 5-vertex graph.
+2. **Block 2 (50 mins):** Code the core graph data structure and priority queue logic.
+3. **Block 3 (30 mins):** Run unit tests against edge cases (loops, empty graphs).
+4. **Block 4 (10 mins):** Document time & space complexity in your lab report.`;
+    } else if (q.includes('backprop') || q.includes('neural') || q.includes('machine learning') || q.includes('gradient')) {
+      reply = `Here is an intuitive explanation of **Backpropagation**:
+
+💡 **The Target Archery Coach Analogy:**
+Imagine you are shooting arrows at a target (*Forward Pass*). You hit 3 inches above the bullseye (*Loss / Error Calculation*). Your coach analyzes your bow tension and arm angle (*Chain Rule / Gradients*) and says: *"Lower your arm by 2 degrees"* (*Weight Update*). You adjust your posture slightly and shoot again.
+
+📐 **3 Core Steps:**
+1. **Forward Pass:** Inputs pass through neural network layers to generate a prediction, and total error is calculated.
+2. **Backward Pass:** Partial derivatives propagate backward using the calculus Chain Rule to calculate how much each weight contributed to the error.
+3. **Gradient Descent:** Weights update using $w = w - \\alpha \\times \\frac{\\partial L}{\\partial w}$, reducing prediction error step-by-step.`;
+    } else if (q.includes('bio') || q.includes('cellular') || q.includes('respiration') || q.includes('paper') || q.includes('biology')) {
+      reply = `Here is an academic strategy for your **Biology Research & Writing**:
+
+📝 **1. Paper Structure Breakdown:**
+- **Introduction:** Clearly state your thesis on cellular energetics and mitochondrial ATP production.
+- **Core Mechanisms:** Detail Glycolysis, the Krebs Cycle, and Electron Transport Chain oxidative phosphorylation.
+- **Discussion:** Address enzyme regulation factors and physiological implications.
+
+📌 **2. Next Actionable Steps:**
+- Gather 3 peer-reviewed journal articles.
+- Draft membrane potential calculations and pathway diagrams.
+- Use our built-in **Flashcards** under Note Summarizer to memorize key enzymes!`;
+    } else if (q.includes('math') || q.includes('linear') || q.includes('algebra') || q.includes('calculus') || q.includes('exam')) {
+      reply = `For **Applied Linear Algebra & Math Exam Preparation**:
+
+📐 **1. High-Priority Exam Topics:**
+- **Eigenvalues & Eigenvectors:** Solve $\\det(A - \\lambda I) = 0$ and calculate null space basis vectors.
+- **Matrix Transformations:** Practice Gaussian elimination, LU decomposition, and matrix orthogonality ($Q^T Q = I$).
+- **Vector Spaces:** Verify linear independence, span, and subspace dimension rules.
+
+💡 **2. Effective Study Method:**
+- Work through 3 practice problems with formulas hidden (Active Recall).
+- Redo any missed problems from scratch without checking solutions.
+- Generate a practice quiz in the **Note Summarizer** tab!`;
+    } else if (q.includes('plan') || q.includes('schedule') || q.includes('time') || q.includes('focus') || q.includes('pomodoro')) {
+      reply = `Here is a custom **Focus & Time Management Plan**:
+
+⏱️ **1. The 50/10 Pomodoro Routine:**
+- **50 Minutes Deep Work:** Block all notifications and focus on 1 singular assignment.
+- **10 Minutes Refresh:** Take a physical break away from screens (stretch, hydrate).
+
+🎯 **2. Peak Energy Distribution:**
+- **Morning (High Alertness):** Complex analytical work (Algorithms / Math).
+- **Afternoon:** Research, writing, and group syncs.
+- **Evening:** Light review, flashcard practice, and planning for tomorrow.`;
+    } else if (q.startsWith('explain') || q.startsWith('what is') || q.startsWith('how does') || q.startsWith('define')) {
+      const topic = message.replace(/^(explain|what is|how does|define)\s+/i, '').trim();
+      reply = `Here is a structured breakdown of **${topic || message}**:
+
+1. **Core Concept:** ${topic ? topic : message} is a key academic topic requiring structured analytical thinking.
+2. **Key Mechanism:** Break down the subject into its primary inputs, transformation processes, and expected outcomes.
+3. **Study Strategy:** Apply active recall by writing out definitions and testing yourself with flashcards.`;
     } else {
-      reply += `Here are three quick tips to boost your academic productivity today:
-- 🎯 **Set 1 Specific Goal**: Define exactly what "done" looks like for your current study session.
-- ⚡ **Eliminate Distractions**: Put your phone in focus mode and open our Pomodoro timer.
-- 📝 **Generate AI Study Packs**: Paste your lecture notes into the AI Summarizer tab to instantly generate flashcards and quizzes!
+      reply = `Regarding your query about **"${message}"**:
 
-Let me know if you want help with a specific course or assignment!`;
+🎯 **Recommended Action Plan:**
+1. **Break it Down:** Divide "${message}" into 25-minute focus intervals.
+2. **Active Recall:** Write down key concepts from memory before reviewing lecture slides.
+3. **Practice Testing:** Use our Note Summarizer tab to instantly generate flashcards and quizzes!`;
     }
 
     return res.json({ reply });
