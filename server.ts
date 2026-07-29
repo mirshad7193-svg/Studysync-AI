@@ -322,7 +322,7 @@ Notes/Details: "${notes}"
 
     if (ai) {
       try {
-        let systemInstruction = `You are StudyPulse AI, a smart, encouraging academic mentor for college students.
+        let systemInstruction = `You are StudySync AI, a smart, encouraging academic mentor for college students.
 Help students stay organized, explain tricky study topics clearly, suggest task priorities, or offer exam prep tips.
 Keep responses clear, well-structured, and helpful. Use bullet points or bold text where appropriate.`;
 
