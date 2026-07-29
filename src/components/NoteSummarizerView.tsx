@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { LectureNote, Flashcard, QuizQuestion } from '../types';
 import { 
   FileText, 
@@ -46,6 +46,9 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [submittedQuiz, setSubmittedQuiz] = useState(false);
 
+  const formRef = useRef<HTMLDivElement>(null);
+  const viewerRef = useRef<HTMLDivElement>(null);
+
   // Sample notes presets for quick testing
   const samplePresets = [
     {
@@ -60,8 +63,42 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
     },
   ];
 
+  const handleNewNoteClick = () => {
+    setSelectedNoteId('new');
+    if (!rawText.trim()) {
+      setInputTitle(samplePresets[0].title);
+      setInputCourse(samplePresets[0].course);
+      setRawText(samplePresets[0].content);
+    }
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
+
+  const handlePresetClick = (preset: typeof samplePresets[0]) => {
+    setSelectedNoteId('new');
+    setInputTitle(preset.title);
+    setInputCourse(preset.course);
+    setRawText(preset.content);
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
+
+  const handleSelectNote = (id: string) => {
+    setSelectedNoteId(id);
+    setCurrentCardIndex(0);
+    setIsFlipped(false);
+    setTimeout(() => {
+      viewerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
+
   const handleSummarize = async () => {
-    if (!rawText.trim()) return;
+    const textToProcess = rawText.trim() || samplePresets[0].content;
+    if (!rawText.trim()) {
+      setRawText(textToProcess);
+    }
 
     try {
       setIsSummarizing(true);
@@ -69,9 +106,9 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          rawContent: rawText.trim(),
-          title: inputTitle,
-          course: inputCourse,
+          rawContent: textToProcess,
+          title: inputTitle || 'Lecture Notes',
+          course: inputCourse || 'General Study',
         }),
       });
 
@@ -82,7 +119,7 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
         title: inputTitle || 'Lecture Notes',
         course: inputCourse || 'General Study',
         createdAt: new Date().toISOString().split('T')[0],
-        rawContent: rawText.trim(),
+        rawContent: textToProcess,
         summary: data.summary || 'Summary generated from study material.',
         keyTakeaways: data.keyTakeaways || [
           'Understand core definitions and main theories in this topic.',
@@ -117,6 +154,9 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
       onSaveGeneratedNote(newLectureNote);
       setSelectedNoteId(newLectureNote.id);
       setActiveSubTab('summary');
+      setTimeout(() => {
+        viewerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
     } catch (err) {
       console.error('Note summarization failed, using fallback:', err);
       const fallbackNote: LectureNote = {
@@ -124,7 +164,7 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
         title: inputTitle || 'Lecture Notes',
         course: inputCourse || 'General Study',
         createdAt: new Date().toISOString().split('T')[0],
-        rawContent: rawText.trim(),
+        rawContent: textToProcess,
         summary: `Synthesized overview for ${inputTitle} (${inputCourse}): Covers key principles, analytical methods, and practical applications outlined in your raw study notes.`,
         keyTakeaways: [
           `Master core definitions and key formulas in ${inputTitle}.`,
@@ -148,6 +188,9 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
       onSaveGeneratedNote(fallbackNote);
       setSelectedNoteId(fallbackNote.id);
       setActiveSubTab('summary');
+      setTimeout(() => {
+        viewerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
     } finally {
       setIsSummarizing(false);
     }
@@ -165,11 +208,8 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
         </div>
 
         <button
-          onClick={() => {
-            setSelectedNoteId('new');
-            setRawText('');
-          }}
-          className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs transition-colors self-start"
+          onClick={handleNewNoteClick}
+          className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs transition-colors self-start cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>New Note Processing</span>
@@ -190,11 +230,7 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
               {notes.map((note) => (
                 <div
                   key={note.id}
-                  onClick={() => {
-                    setSelectedNoteId(note.id);
-                    setCurrentCardIndex(0);
-                    setIsFlipped(false);
-                  }}
+                  onClick={() => handleSelectNote(note.id)}
                   className={`p-3 rounded-xl border cursor-pointer transition-all ${
                     selectedNoteId === note.id
                       ? 'bg-indigo-50 border-indigo-300 font-bold shadow-2xs'
@@ -221,13 +257,8 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
               {samplePresets.map((preset, i) => (
                 <button
                   key={i}
-                  onClick={() => {
-                    setSelectedNoteId('new');
-                    setInputTitle(preset.title);
-                    setInputCourse(preset.course);
-                    setRawText(preset.content);
-                  }}
-                  className="w-full text-left p-2.5 rounded-lg bg-white border border-indigo-100 hover:border-indigo-300 text-xs text-slate-800 font-medium transition-all"
+                  onClick={() => handlePresetClick(preset)}
+                  className="w-full text-left p-2.5 rounded-lg bg-white border border-indigo-100 hover:border-indigo-300 text-xs text-slate-800 font-medium transition-all cursor-pointer"
                 >
                   <span className="font-bold text-indigo-600">{preset.course}:</span> {preset.title}
                 </button>
@@ -240,7 +271,7 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
         <div className="lg:col-span-2 space-y-6">
           {selectedNoteId === 'new' ? (
             /* Note Processing Form */
-            <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
+            <div ref={formRef} className="bg-white p-6 rounded-2xl border border-indigo-200/80 shadow-xs space-y-4">
               <div className="border-b pb-3">
                 <h3 className="text-base font-bold text-slate-900 flex items-center space-x-2">
                   <Sparkles className="w-5 h-5 text-indigo-600" />
@@ -283,8 +314,8 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
 
               <button
                 onClick={handleSummarize}
-                disabled={isSummarizing || !rawText.trim()}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
+                disabled={isSummarizing}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer"
               >
                 {isSummarizing ? (
                   <>
@@ -301,7 +332,7 @@ export const NoteSummarizerView: React.FC<NoteSummarizerViewProps> = ({
             </div>
           ) : currentNote ? (
             /* Active Study Pack Viewer */
-            <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-5">
+            <div ref={viewerRef} className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-5">
               {/* Note Header & Subtabs */}
               <div className="space-y-3 border-b pb-4">
                 <div className="flex items-center space-x-2">
