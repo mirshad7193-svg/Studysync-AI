@@ -1,5 +1,5 @@
 {
-  "name": "StudyPulse - Student Hub & AI Planner",
+  "name": "StudySync AI — Intelligent Academic Workspace & Study Companion",
   "description": "All-in-one student workspace to track assignments, organize study schedules, collaborate on group projects, and leverage AI to summarize notes and optimize study time.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

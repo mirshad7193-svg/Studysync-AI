@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
-                <span className="font-bold text-lg text-slate-900 tracking-tight">StudyPulse</span>
+                <span className="font-bold text-lg text-slate-900 tracking-tight">StudySync AI</span>
                 <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
                   AI Hub
                 </span>
